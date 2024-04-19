@@ -32,7 +32,8 @@ def before_request():
         return
     forbidden_paths = ['/api/v1/status/',
                        '/api/v1/unauthorized/',
-                       '/api/v1/forbidden']
+                       '/api/v1/forbidden',
+                       '/api/v1/auth_session/login/']
     if auth.require_auth(request.path, forbidden_paths):
         auth_header = auth.authorization_header(request)
         user_header = auth.current_user(request)
@@ -41,6 +42,9 @@ def before_request():
             abort(401)
         if user_header is None:
             print("user_header is None")
+            abort(403)
+        if (auth.authorization_header(
+            request)) and (auth.current_user(request) is None):
             abort(403)
         request.current_user = auth.current_user(request)
 
