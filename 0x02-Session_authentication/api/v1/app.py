@@ -39,12 +39,12 @@ def before_request():
         user_header = auth.current_user(request)
         if auth_header is None:
             print("auth_header is None")
-            abort(401)
+            abort(403)
         if user_header is None:
             print("user_header is None")
-            abort(403)
+            abort(401)
         if (auth.authorization_header(
-            request) is None ) and (auth.current_user(request) is None):
+                request) is None) and (auth.current_user(request) is None):
             abort(403)
         request.current_user = auth.current_user(request)
 
